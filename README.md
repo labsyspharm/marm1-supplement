@@ -1,12 +1,12 @@
 ## Usage instructions
 
-### Jupyter notebook
+### Jupyter notebook viewer
 
 ```
 docker run -p 8888:8888 labsyspharm/marm1-supplement
 ``` 
 
-### Command line
+### Command line access
 
 ```
 docker run --entrypoint /bin/bash -i -t labsyspharm/marm1-supplement
@@ -15,5 +15,5 @@ docker run --entrypoint /bin/bash -i -t labsyspharm/marm1-supplement
 ## Rebuilding the container
 
 ```
-docker build https://github.com/labsyspharm/marm1-supplement.git
+docker build -t labsyspharm/marm1-supplement https://github.com/labsyspharm/marm1-supplement.git
 ```
