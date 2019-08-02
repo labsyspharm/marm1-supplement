@@ -19,4 +19,4 @@ RUN \
     pip install git+git://github.com/jmuhlich/pysb.git@marm1-integration python-libsbml cite2c \
     && python -m cite2c.install
 
-COPY --chown=jovyan:users / /home/jovyan/
+COPY --chown=jovyan:users /resources/ /home/jovyan/
