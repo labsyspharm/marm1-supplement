@@ -11,14 +11,15 @@ begin parameters
   bind_EGFR_EGFR_phi                          1.000000e+00
   ep_EGFR_EGFR_mod_EGF_single_deltaG          1.000000e-03
   ep_EGFR_EGFR_mod_EGF_double_deltaG          1.000000e-03
-  bind_RTK_GRB2_kf                            1.000000e+01
-  bind_RTK_GRB2_kD                            1.000000e-02
+  bind_EGFR_GRB2_kf                           1.000000e+01
+  bind_EGFR_GRB2_kD                           1.000000e-02
   EGFR_eq                                     1.000000e+04
   synthesize_ERKphosphop_EGFR_kdeg            1.000000e+01
   EGFR_crispr                                 1.000000e+00
   catalyze_GRB2_RTKSH2ANY_deg_kcat            1.000000e+01
   bind_GRB2_SOS1_kf                           1.000000e+01
   bind_GRB2_SOS1_kD                           1.000000e-02
+  bind_GRB2_SOS1_phi                          1.000000e+00
   bind_SOS1_RAS_kf                            1.000000e+01
   bind_SOS1_RAS_kD                            1.000000e-02
   catalyze_SOS1_RAS_gtp_kcat                  1.000000e-02
@@ -55,7 +56,7 @@ begin parameters
   catalyze_ERKphosphop_SOS1_pS1134_kbase      0.000000e+00
   catalyze_ERKphosphop_SOS1_pS1134_kcat       1.000000e+01
   catalyze_phosphatase_SOS1_uS1134_kcatr      1.000000e+00
-  ep_SOS1S1134p_GRB2_deltaG                   2.000000e+00
+  ep_SOS1S1134p_GRB2_deltaG                   1.000000e+02
   synthesize_ERKphosphop_EGFR_ERK_gexpslope   1.000000e+03
   DUSP_eq                                     1.000000e+04
   synthesize_ERKphosphop_DUSP_ERK_gexpslope   1.000000e+03
@@ -74,71 +75,73 @@ begin parameters
   pMEK_IF_offset                              1.000000e-01
   pERK_IF_scale                               1.000000e+00
   pERK_IF_offset                              1.000000e-01
-  N_Avogadro                                  6.02214085700000e+23
+  N_Avogadro                                  6.02214076000000e+23
   volume                                      1.00000000000000e-12
   m_Da_EGF                                    6200.00000000000
   initRAFi                                    RAFi_0
   initMEKi                                    MEKi_0
   initEGF                                     6.02214085854916e+23*EGF_0*(m_Da_EGF*N_Avogadro)^(-1)
-  bind_EGF_EGFR_kr                            bind_EGF_EGFR_kf*bind_EGF_EGFR_kD
+  bind_EGF_EGFR_kr                            bind_EGF_EGFR_kD*bind_EGF_EGFR_kf
   Gf_bind_EGF_EGFR                            ln(bind_EGF_EGFR_kD)
-  Ea0_bind_EGF_EGFR                           -(bind_EGF_EGFR_phi*ln(bind_EGF_EGFR_kD) + ln(bind_EGF_EGFR_kf))
-  bind_EGFR_EGFR_kr                           bind_EGFR_EGFR_kf*bind_EGFR_EGFR_kD
+  Ea0_bind_EGF_EGFR                           -ln(bind_EGF_EGFR_kf) - bind_EGF_EGFR_phi*ln(bind_EGF_EGFR_kD)
+  bind_EGFR_EGFR_kr                           bind_EGFR_EGFR_kD*bind_EGFR_EGFR_kf
   Gf_bind_EGFR_EGFR                           ln(bind_EGFR_EGFR_kD)
-  Ea0_bind_EGFR_EGFR                          -(bind_EGFR_EGFR_phi*ln(bind_EGFR_EGFR_kD) + ln(bind_EGFR_EGFR_kf))
+  Ea0_bind_EGFR_EGFR                          -ln(bind_EGFR_EGFR_kf) - bind_EGFR_EGFR_phi*ln(bind_EGFR_EGFR_kD)
   ep_EGFR_EGFR_mod_EGF_single_Gf              ln(ep_EGFR_EGFR_mod_EGF_single_deltaG)
   ep_EGFR_EGFR_mod_EGF_double_Gf              ln(ep_EGFR_EGFR_mod_EGF_double_deltaG) + ln(ep_EGFR_EGFR_mod_EGF_single_deltaG)
-  bind_RTK_GRB2_kr                            bind_RTK_GRB2_kf*bind_RTK_GRB2_kD
-  synthesize_ERKphosphop_EGFR_ksyn            1000000.0*EGFR_eq*(N_Avogadro*volume)^(-1)*synthesize_ERKphosphop_EGFR_kdeg*EGFR_crispr
-  bind_GRB2_SOS1_kr                           bind_GRB2_SOS1_kf*bind_GRB2_SOS1_kD
-  bind_SOS1_RAS_kr                            bind_SOS1_RAS_kf*bind_SOS1_RAS_kD
-  catalyze_NF1_RAS_gdp_kcat                   catalyze_SOS1_RAS_gtp_kcat*catalyze_NF1_RAS_gdp_kcatr
-  bind_BRAF_BRAF_kr                           bind_RAF_RAF_kf*bind_RAF_RAF_kD
+  bind_EGFR_GRB2_kr                           bind_EGFR_GRB2_kD*bind_EGFR_GRB2_kf
+  synthesize_ERKphosphop_EGFR_ksyn            1000000.0*EGFR_crispr*EGFR_eq*synthesize_ERKphosphop_EGFR_kdeg*(N_Avogadro*volume)^(-1)
+  bind_GRB2_SOS1_kr                           bind_GRB2_SOS1_kD*bind_GRB2_SOS1_kf
+  Gf_bind_GRB2_SOS1                           ln(bind_GRB2_SOS1_kD)
+  Ea0_bind_GRB2_SOS1                          -ln(bind_GRB2_SOS1_kf) - bind_GRB2_SOS1_phi*ln(bind_GRB2_SOS1_kD)
+  bind_SOS1_RAS_kr                            bind_SOS1_RAS_kD*bind_SOS1_RAS_kf
+  catalyze_NF1_RAS_gdp_kcat                   catalyze_NF1_RAS_gdp_kcatr*catalyze_SOS1_RAS_gtp_kcat
+  bind_BRAF_BRAF_kr                           bind_RAF_RAF_kD*bind_RAF_RAF_kf
   Gf_bind_BRAF_BRAF                           ln(bind_RAF_RAF_kD)
-  Ea0_bind_BRAF_BRAF                          -(bind_RAF_RAF_phi*ln(bind_RAF_RAF_kD) + ln(bind_RAF_RAF_kf))
-  bind_BRAF_CRAF_kr                           bind_RAF_RAF_kf*bind_RAF_RAF_kD
+  Ea0_bind_BRAF_BRAF                          -ln(bind_RAF_RAF_kf) - bind_RAF_RAF_phi*ln(bind_RAF_RAF_kD)
+  bind_BRAF_CRAF_kr                           bind_RAF_RAF_kD*bind_RAF_RAF_kf
   Gf_bind_BRAF_CRAF                           ln(bind_RAF_RAF_kD)
-  Ea0_bind_BRAF_CRAF                          -(bind_RAF_RAF_phi*ln(bind_RAF_RAF_kD) + ln(bind_RAF_RAF_kf))
-  bind_CRAF_CRAF_kr                           bind_RAF_RAF_kf*bind_RAF_RAF_kD
+  Ea0_bind_BRAF_CRAF                          -ln(bind_RAF_RAF_kf) - bind_RAF_RAF_phi*ln(bind_RAF_RAF_kD)
+  bind_CRAF_CRAF_kr                           bind_RAF_RAF_kD*bind_RAF_RAF_kf
   Gf_bind_CRAF_CRAF                           ln(bind_RAF_RAF_kD)
-  Ea0_bind_CRAF_CRAF                          -(bind_RAF_RAF_phi*ln(bind_RAF_RAF_kD) + ln(bind_RAF_RAF_kf))
-  bind_RASstategtp_BRAF_kr                    bind_RASstategtp_RAF_kf*bind_RASstategtp_RAF_kD
+  Ea0_bind_CRAF_CRAF                          -ln(bind_RAF_RAF_kf) - bind_RAF_RAF_phi*ln(bind_RAF_RAF_kD)
+  bind_RASstategtp_BRAF_kr                    bind_RASstategtp_RAF_kD*bind_RASstategtp_RAF_kf
   Gf_bind_RASstategtp_BRAF                    ln(bind_RASstategtp_RAF_kD)
-  Ea0_bind_RASstategtp_BRAF                   -(bind_RASstategtp_RAF_phi*ln(bind_RASstategtp_RAF_kD) + ln(bind_RASstategtp_RAF_kf))
-  bind_RASstategtp_CRAF_kr                    bind_RASstategtp_RAF_kf*bind_RASstategtp_RAF_kD
+  Ea0_bind_RASstategtp_BRAF                   -ln(bind_RASstategtp_RAF_kf) - bind_RASstategtp_RAF_phi*ln(bind_RASstategtp_RAF_kD)
+  bind_RASstategtp_CRAF_kr                    bind_RASstategtp_RAF_kD*bind_RASstategtp_RAF_kf
   Gf_bind_RASstategtp_CRAF                    ln(bind_RASstategtp_RAF_kD)
-  Ea0_bind_RASstategtp_CRAF                   -(bind_RASstategtp_RAF_phi*ln(bind_RASstategtp_RAF_kD) + ln(bind_RASstategtp_RAF_kf))
+  Ea0_bind_RASstategtp_CRAF                   -ln(bind_RASstategtp_RAF_kf) - bind_RASstategtp_RAF_phi*ln(bind_RASstategtp_RAF_kD)
   ep_RAF_RAF_mod_RASstategtp_double_Gf        ln(ep_RAF_RAF_mod_RASstategtp_double_deltaG)
-  bind_BRAFi_RAF_kr                           bind_RAFi_RAF_kf*bind_RAFi_RAF_kD
+  bind_BRAFi_RAF_kr                           bind_RAFi_RAF_kD*bind_RAFi_RAF_kf
   Gf_bind_BRAFi_RAF                           ln(bind_RAFi_RAF_kD)
-  Ea0_bind_BRAFi_RAF                          -(bind_RAFi_RAF_phi*ln(bind_RAFi_RAF_kD) + ln(bind_RAFi_RAF_kf))
-  bind_CRAFi_RAF_kr                           bind_RAFi_RAF_kf*bind_RAFi_RAF_kD
+  Ea0_bind_BRAFi_RAF                          -ln(bind_RAFi_RAF_kf) - bind_RAFi_RAF_phi*ln(bind_RAFi_RAF_kD)
+  bind_CRAFi_RAF_kr                           bind_RAFi_RAF_kD*bind_RAFi_RAF_kf
   Gf_bind_CRAFi_RAF                           ln(bind_RAFi_RAF_kD)
-  Ea0_bind_CRAFi_RAF                          -(bind_RAFi_RAF_phi*ln(bind_RAFi_RAF_kD) + ln(bind_RAFi_RAF_kf))
+  Ea0_bind_CRAFi_RAF                          -ln(bind_RAFi_RAF_kf) - bind_RAFi_RAF_phi*ln(bind_RAFi_RAF_kD)
   ep_RAF_RAF_mod_RAFi_single_Gf               ln(ep_RAF_RAF_mod_RAFi_single_deltaG)
   ep_RAF_RAF_mod_RAFi_double_Gf               ln(ep_RAF_RAF_mod_RAFi_double_deltaG) + ln(ep_RAF_RAF_mod_RAFi_single_deltaG)
-  bind_BRAF_MEKphosphou_kr                    bind_RAF_MEKphosphou_kf*bind_RAF_MEKphosphou_kD
+  bind_BRAF_MEKphosphou_kr                    bind_RAF_MEKphosphou_kD*bind_RAF_MEKphosphou_kf
   Gf_bind_BRAF_MEKphosphou                    ln(bind_RAF_MEKphosphou_kD)
-  Ea0_bind_BRAF_MEKphosphou                   -(bind_RAF_MEKphosphou_phi*ln(bind_RAF_MEKphosphou_kD) + ln(bind_RAF_MEKphosphou_kf))
-  bind_CRAF_MEKphosphou_kr                    bind_RAF_MEKphosphou_kf*bind_RAF_MEKphosphou_kD
+  Ea0_bind_BRAF_MEKphosphou                   -ln(bind_RAF_MEKphosphou_kf) - bind_RAF_MEKphosphou_phi*ln(bind_RAF_MEKphosphou_kD)
+  bind_CRAF_MEKphosphou_kr                    bind_RAF_MEKphosphou_kD*bind_RAF_MEKphosphou_kf
   Gf_bind_CRAF_MEKphosphou                    ln(bind_RAF_MEKphosphou_kD)
-  Ea0_bind_CRAF_MEKphosphou                   -(bind_RAF_MEKphosphou_phi*ln(bind_RAF_MEKphosphou_kD) + ln(bind_RAF_MEKphosphou_kf))
-  catalyze_PP2A_MEK_u_kcat                    catalyze_RAFrafiNone_MEK_p_kcat*catalyze_PP2A_MEK_u_kcatr
-  bind_MEKi_MEK_kr                            bind_MEKi_MEK_kf*bind_MEKi_MEK_kD
+  Ea0_bind_CRAF_MEKphosphou                   -ln(bind_RAF_MEKphosphou_kf) - bind_RAF_MEKphosphou_phi*ln(bind_RAF_MEKphosphou_kD)
+  catalyze_PP2A_MEK_u_kcat                    catalyze_PP2A_MEK_u_kcatr*catalyze_RAFrafiNone_MEK_p_kcat
+  bind_MEKi_MEK_kr                            bind_MEKi_MEK_kD*bind_MEKi_MEK_kf
   Gf_bind_MEKi_MEK                            ln(bind_MEKi_MEK_kD)
-  Ea0_bind_MEKi_MEK                           -(bind_MEKi_MEK_phi*ln(bind_MEKi_MEK_kD) + ln(bind_MEKi_MEK_kf))
+  Ea0_bind_MEKi_MEK                           -ln(bind_MEKi_MEK_kf) - bind_MEKi_MEK_phi*ln(bind_MEKi_MEK_kD)
   ep_MEKphosphop_MEKi_Gf                      ln(ep_MEKphosphop_MEKi_deltaG)
-  bind_MEK_ERKphosphou_kr                     bind_MEK_ERKphosphou_kf*bind_MEK_ERKphosphou_kD
-  synthesize_ERKphosphop_SPRY_ksyn            1000000.0*SPRY_eq*(N_Avogadro*volume)^(-1)*synthesize_ERKphosphop_SPRY_kdeg
+  bind_MEK_ERKphosphou_kr                     bind_MEK_ERKphosphou_kD*bind_MEK_ERKphosphou_kf
+  synthesize_ERKphosphop_SPRY_ksyn            1000000.0*SPRY_eq*synthesize_ERKphosphop_SPRY_kdeg*(N_Avogadro*volume)^(-1)
   synthesize_ERKphosphop_SPRY_kmodslope       synthesize_ERKphosphop_SPRY_ERK_gexpslope*synthesize_ERKphosphop_SPRY_kdeg
-  bind_SPRY_GRB2_kr                           bind_SPRY_GRB2_kf*bind_SPRY_GRB2_kD
+  bind_SPRY_GRB2_kr                           bind_SPRY_GRB2_kD*bind_SPRY_GRB2_kf
   catalyze_phosphatase_SOS1_uS1134_kcat       catalyze_ERKphosphop_SOS1_pS1134_kcat*catalyze_phosphatase_SOS1_uS1134_kcatr
-  __reverse_bind_GRB2_SOS1_local1             bind_GRB2_SOS1_kD*bind_GRB2_SOS1_kf*ep_SOS1S1134p_GRB2_deltaG
+  ep_SOS1S1134p_GRB2_Gf                       ln(ep_SOS1S1134p_GRB2_deltaG)
   synthesize_ERKphosphop_EGFR_kmodslope       synthesize_ERKphosphop_EGFR_ERK_gexpslope*synthesize_ERKphosphop_EGFR_kdeg
-  synthesize_ERKphosphop_DUSP_ksyn            1000000.0*DUSP_eq*(N_Avogadro*volume)^(-1)*synthesize_ERKphosphop_DUSP_kdeg
+  synthesize_ERKphosphop_DUSP_ksyn            1000000.0*DUSP_eq*synthesize_ERKphosphop_DUSP_kdeg*(N_Avogadro*volume)^(-1)
   synthesize_ERKphosphop_DUSP_kmodslope       synthesize_ERKphosphop_DUSP_ERK_gexpslope*synthesize_ERKphosphop_DUSP_kdeg
-  bind_DUSP_ERKphosphop_kr                    bind_DUSP_ERKphosphop_kf*bind_DUSP_ERKphosphop_kD
-  catalyze_DUSP_ERK_u_kcat                    catalyze_MEKmekiNone_phosphop_ERK_p_kcat*catalyze_DUSP_ERK_u_kcatr
+  bind_DUSP_ERKphosphop_kr                    bind_DUSP_ERKphosphop_kD*bind_DUSP_ERKphosphop_kf
+  catalyze_DUSP_ERK_u_kcat                    catalyze_DUSP_ERK_u_kcatr*catalyze_MEKmekiNone_phosphop_ERK_p_kcat
   initBRAF                                    1000000.0*BRAF_0*(N_Avogadro*volume)^(-1)
   initCRAF                                    1000000.0*CRAF_0*(N_Avogadro*volume)^(-1)
   initRAS                                     1000000.0*RAS_0*(N_Avogadro*volume)^(-1)
@@ -166,16 +169,12 @@ end molecule types
 
 begin observables
   Molecules tBRAF                 BRAF()
-  Molecules tBRAF600E             BRAF(AA600~E)
   Molecules tCRAF                 CRAF()
   Molecules tRAS                  RAS()
-  Molecules tRAFi                 RAFi()
   Molecules tMEK                  MEK()
-  Molecules tMEKi                 MEKi()
   Molecules tERK                  ERK()
   Molecules tDUSP                 DUSP()
   Molecules tEGFR                 EGFR()
-  Molecules tEGF                  EGF()
   Molecules tGRB2                 GRB2()
   Molecules tSPRY                 SPRY()
   Molecules tSOS1                 SOS1()
@@ -187,7 +186,7 @@ begin observables
   Molecules RAS_gtp               RAS(state~gtp)
   Molecules RAS_gdp               RAS(state~gdp)
   Molecules active_RAF_dimers     BRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1)
-  Molecules active_RAF_monomers   BRAF(AA600~E,raf,rafi)
+  Molecules active_RAF_monomers   BRAF(AA600~E,raf,rafi) BRAF(AA600~E,RBD,raf!+,rafi) BRAF(AA600~E,RBD!+,raf!2,rafi).BRAF(RBD,raf!2) BRAF(AA600~E,RBD!+,raf!2,rafi).CRAF(RBD,raf!2)
   Molecules active_MEK            MEK(meki,phospho~p)
   Molecules uMEK                  MEK(phospho~u)
   Molecules uERK                  ERK(phospho~u)
@@ -200,7 +199,6 @@ begin functions
   tMEK_obs()         1.0e-6*tMEK*N_Avogadro*volume
   tDUSP_obs()        1.0e-6*tDUSP*N_Avogadro*volume
   tEGFR_obs()        1.0e-6*tEGFR*N_Avogadro*volume
-  tEGF_obs()         1.0e-6*tEGF*N_Avogadro*volume
   tGRB2_obs()        1.0e-6*tGRB2*N_Avogadro*volume
   tSPRY_obs()        1.0e-6*tSPRY*N_Avogadro*volume
   tSOS1_obs()        1.0e-6*tSOS1*N_Avogadro*volume
@@ -208,8 +206,8 @@ begin functions
   pERK_obs()         pERK*tERK^(-1)
   pS1134SOS1_obs()   pS1134SOS1*tSOS1^(-1)
   pMEK_obs()         pMEK*tMEK^(-1)
-  pERK_IF_obs()      pERK_IF_scale*pERK_obs + pERK_IF_offset
-  pMEK_IF_obs()      pMEK_IF_scale*pMEK_obs + pMEK_IF_offset
+  pMEK_IF_obs()      pMEK_obs*pMEK_IF_scale + pMEK_IF_offset
+  pERK_IF_obs()      pERK_obs*pERK_IF_scale + pERK_IF_offset
 end functions
 
 begin species
@@ -228,87 +226,86 @@ end species
 begin energy patterns
   ep_bind_EGF_EGFR:             EGF(rtk!1).EGFR(rtkf!1)    Gf_bind_EGF_EGFR
   ep_bind_EGFR_EGFR:            EGFR(rtk!1).EGFR(rtk!1)    Gf_bind_EGFR_EGFR
-  ep_EGFR_EGFR_mod_EGF_single:  EGFR(rtk!1,rtkf).EGFR(rtk!1,rtkf!2).EGF(rtk!2)    ep_EGFR_EGFR_mod_EGF_single_Gf
-  ep_EGFR_EGFR_mod_EGF_double:  EGF(rtk!2).EGFR(rtk!1,rtkf!2).EGFR(rtk!1,rtkf!3).EGF(rtk!3)    ep_EGFR_EGFR_mod_EGF_double_Gf
+  ep_EGFR_EGFR_mod_EGF_single:  EGF(rtk!2).EGFR(rtk!1,rtkf!2).EGFR(rtk!1,rtkf)    ep_EGFR_EGFR_mod_EGF_single_Gf
+  ep_EGFR_EGFR_mod_EGF_double:  EGF(rtk!2).EGF(rtk!3).EGFR(rtk!1,rtkf!2).EGFR(rtk!1,rtkf!3)    ep_EGFR_EGFR_mod_EGF_double_Gf
   ep_bind_BRAF_BRAF:            BRAF(raf!1).BRAF(raf!1)    Gf_bind_BRAF_BRAF
   ep_bind_BRAF_CRAF:            BRAF(raf!1).CRAF(raf!1)    Gf_bind_BRAF_CRAF
   ep_bind_CRAF_CRAF:            CRAF(raf!1).CRAF(raf!1)    Gf_bind_CRAF_CRAF
-  ep_bind_RASstategtp_BRAF:     RAS(raf!1,state~gtp).BRAF(RBD!1)    Gf_bind_RASstategtp_BRAF
-  ep_bind_RASstategtp_CRAF:     RAS(raf!1,state~gtp).CRAF(RBD!1)    Gf_bind_RASstategtp_CRAF
-  ep_BRAF_BRAF_mod_RAS_double:  RAS(raf!2,state~gtp).BRAF(RBD!2,raf!1).BRAF(RBD!3,raf!1).RAS(raf!3,state~gtp)    ep_RAF_RAF_mod_RASstategtp_double_Gf
-  ep_BRAF_CRAF_mod_RAS_double:  RAS(raf!2,state~gtp).BRAF(RBD!2,raf!1).CRAF(RBD!3,raf!1).RAS(raf!3,state~gtp)    ep_RAF_RAF_mod_RASstategtp_double_Gf
-  ep_CRAF_CRAF_mod_RAS_double:  RAS(raf!2,state~gtp).CRAF(RBD!2,raf!1).CRAF(RBD!3,raf!1).RAS(raf!3,state~gtp)    ep_RAF_RAF_mod_RASstategtp_double_Gf
-  ep_bind_BRAFi_RAF:            RAFi(raf!1).BRAF(rafi!1)    Gf_bind_BRAFi_RAF
-  ep_bind_CRAFi_RAF:            RAFi(raf!1).CRAF(rafi!1)    Gf_bind_CRAFi_RAF
-  ep_BRAF_BRAF_mod_RAFi_single:  BRAF(raf!1,rafi).BRAF(raf!1,rafi!2).RAFi(raf!2)    ep_RAF_RAF_mod_RAFi_single_Gf
+  ep_bind_RASstategtp_BRAF:     BRAF(RBD!1).RAS(raf!1,state~gtp)    Gf_bind_RASstategtp_BRAF
+  ep_bind_RASstategtp_CRAF:     CRAF(RBD!1).RAS(raf!1,state~gtp)    Gf_bind_RASstategtp_CRAF
+  ep_BRAF_BRAF_mod_RAS_double:  BRAF(RBD!2,raf!1).BRAF(RBD!3,raf!1).RAS(raf!2,state~gtp).RAS(raf!3,state~gtp)    ep_RAF_RAF_mod_RASstategtp_double_Gf
+  ep_BRAF_CRAF_mod_RAS_double:  BRAF(RBD!2,raf!1).CRAF(RBD!3,raf!1).RAS(raf!2,state~gtp).RAS(raf!3,state~gtp)    ep_RAF_RAF_mod_RASstategtp_double_Gf
+  ep_CRAF_CRAF_mod_RAS_double:  CRAF(RBD!2,raf!1).CRAF(RBD!3,raf!1).RAS(raf!2,state~gtp).RAS(raf!3,state~gtp)    ep_RAF_RAF_mod_RASstategtp_double_Gf
+  ep_bind_BRAFi_RAF:            BRAF(rafi!1).RAFi(raf!1)    Gf_bind_BRAFi_RAF
+  ep_bind_CRAFi_RAF:            CRAF(rafi!1).RAFi(raf!1)    Gf_bind_CRAFi_RAF
+  ep_BRAF_BRAF_mod_RAFi_single:  BRAF(raf!1,rafi!2).BRAF(raf!1,rafi).RAFi(raf!2)    ep_RAF_RAF_mod_RAFi_single_Gf
   ep_BRAF_CRAF_mod_RAFi_single:  BRAF(raf!1,rafi).CRAF(raf!1,rafi!2).RAFi(raf!2)    ep_RAF_RAF_mod_RAFi_single_Gf
-  ep_CRAF_BRAF_mod_RAFi_single:  CRAF(raf!1,rafi).BRAF(raf!1,rafi!2).RAFi(raf!2)    ep_RAF_RAF_mod_RAFi_single_Gf
-  ep_CRAF_CRAF_mod_RAFi_single:  CRAF(raf!1,rafi).CRAF(raf!1,rafi!2).RAFi(raf!2)    ep_RAF_RAF_mod_RAFi_single_Gf
-  ep_BRAF_BRAF_mod_RAFi_double:  RAFi(raf!2).BRAF(raf!1,rafi!2).BRAF(raf!1,rafi!3).RAFi(raf!3)    ep_RAF_RAF_mod_RAFi_double_Gf
-  ep_BRAF_CRAF_mod_RAFi_double:  RAFi(raf!2).BRAF(raf!1,rafi!2).CRAF(raf!1,rafi!3).RAFi(raf!3)    ep_RAF_RAF_mod_RAFi_double_Gf
-  ep_CRAF_CRAF_mod_RAFi_double:  RAFi(raf!2).CRAF(raf!1,rafi!2).CRAF(raf!1,rafi!3).RAFi(raf!3)    ep_RAF_RAF_mod_RAFi_double_Gf
+  ep_CRAF_BRAF_mod_RAFi_single:  BRAF(raf!1,rafi!2).CRAF(raf!1,rafi).RAFi(raf!2)    ep_RAF_RAF_mod_RAFi_single_Gf
+  ep_CRAF_CRAF_mod_RAFi_single:  CRAF(raf!1,rafi!2).CRAF(raf!1,rafi).RAFi(raf!2)    ep_RAF_RAF_mod_RAFi_single_Gf
+  ep_BRAF_BRAF_mod_RAFi_double:  BRAF(raf!1,rafi!2).BRAF(raf!1,rafi!3).RAFi(raf!2).RAFi(raf!3)    ep_RAF_RAF_mod_RAFi_double_Gf
+  ep_BRAF_CRAF_mod_RAFi_double:  BRAF(raf!1,rafi!2).CRAF(raf!1,rafi!3).RAFi(raf!2).RAFi(raf!3)    ep_RAF_RAF_mod_RAFi_double_Gf
+  ep_CRAF_CRAF_mod_RAFi_double:  CRAF(raf!1,rafi!2).CRAF(raf!1,rafi!3).RAFi(raf!2).RAFi(raf!3)    ep_RAF_RAF_mod_RAFi_double_Gf
   ep_bind_BRAF_MEKphosphou:     BRAF(mek!1).MEK(phospho~u,raf!1)    Gf_bind_BRAF_MEKphosphou
   ep_bind_CRAF_MEKphosphou:     CRAF(mek!1).MEK(phospho~u,raf!1)    Gf_bind_CRAF_MEKphosphou
-  ep_bind_MEKi_MEK:             MEKi(mek!1).MEK(meki!1)    Gf_bind_MEKi_MEK
+  ep_bind_MEKi_MEK:             MEK(meki!1).MEKi(mek!1)    Gf_bind_MEKi_MEK
   ep_MEKphosphop_MEKi_single:   MEK(meki!1,phospho~p).MEKi(mek!1)    ep_MEKphosphop_MEKi_Gf
+  ep_SOS1S1134p_GRB2_single:    GRB2(SH3!1).SOS1(S1134~p,SH3!1)    ep_SOS1S1134p_GRB2_Gf
 end energy patterns
 
 begin reaction rules
   EGF_and_EGFR_bind_and_dissociate:          EGF(rtk) + EGFR(rtkf) <-> EGF(rtk!1).EGFR(rtkf!1)    Arrhenius(bind_EGF_EGFR_phi, Ea0_bind_EGF_EGFR)
   EGFR_and_EGFR_bind_and_dissociate:         EGFR(rtk) + EGFR(rtk) <-> EGFR(rtk!1).EGFR(rtk!1)    Arrhenius(bind_EGFR_EGFR_phi, Ea0_bind_EGFR_EGFR)
-  transactivated_RTK_dimers_bind_GRB2:       EGFR(rtk!1,rtkf!+).EGFR(SH2,rtk!1) + GRB2(SH2) -> EGFR(rtk!1,rtkf!+).EGFR(SH2!2,rtk!1).GRB2(SH2!2)    bind_RTK_GRB2_kf
-  GRB2_dissociates_from_RTK:                 EGFR(SH2!1).GRB2(SH2!1) -> EGFR(SH2) + GRB2(SH2)    bind_RTK_GRB2_kr
+  transactivated_EGFR_dimers_bind_GRB2:      EGFR(SH2,rtk!1).EGFR(rtk!1,rtkf!+) + GRB2(SH2) -> EGFR(SH2!2,rtk!1).EGFR(rtk!1,rtkf!+).GRB2(SH2!2)    bind_EGFR_GRB2_kf
+  GRB2_dissociates_from_EGFR:                EGFR(SH2!1).GRB2(SH2!1) -> EGFR(SH2) + GRB2(SH2)    bind_EGFR_GRB2_kr
   basal_synthesis_EGFR:                      0 -> EGFR(SH2,rtk,rtkf)    synthesize_ERKphosphop_EGFR_ksyn
   basal_degradation_EGFR:                    EGFR() -> 0    synthesize_ERKphosphop_EGFR_kdeg DeleteMolecules
   GRB2_degrades_activeRTK_dimers:            EGFR(SH2!+,rtk!1).EGFR(SH2,rtk!1) -> 0    catalyze_GRB2_RTKSH2ANY_deg_kcat DeleteMolecules
   GRB2_degrades_doubleactiveRTK_dimers:      EGFR(SH2!+,rtk!1).EGFR(SH2!+,rtk!1) -> 0    catalyze_GRB2_RTKSH2ANY_deg_kcat DeleteMolecules
   GRB2_degrades_activeRTK_monomers:          EGFR(SH2!+,rtk) -> 0    catalyze_GRB2_RTKSH2ANY_deg_kcat DeleteMolecules
-  GRB2_binds_SOS1:                           GRB2(SH3) + SOS1(SH3) -> GRB2(SH3!1).SOS1(SH3!1)    bind_GRB2_SOS1_kf
-  GRB2_dissociates_from_SOS1:                GRB2(SH3!1).SOS1(SH3!1) -> GRB2(SH3) + SOS1(SH3)    bind_GRB2_SOS1_kr
-  RTK_and_GRB2_bound_SOS1_binds_RASgdp:      GRB2(SH2!+,SH3!1).SOS1(SH3!1,ras) + RAS(sos1,state~gdp) -> GRB2(SH2!+,SH3!1).SOS1(SH3!1,ras!2).RAS(sos1!2,state~gdp)    bind_SOS1_RAS_kf
-  SOS1_dissociates_from_RAS:                 SOS1(ras!1).RAS(sos1!1) -> SOS1(ras) + RAS(sos1)    bind_SOS1_RAS_kr
-  SOS1_catalyzes_RAS_guanosine_exchange:     SOS1(ras!1).RAS(sos1!1,state~gdp) -> SOS1(ras) + RAS(sos1,state~gtp)    catalyze_SOS1_RAS_gtp_kcat
+  GRB2_and_SOS1_bind_and_dissociate:         GRB2(SH3) + SOS1(SH3) <-> GRB2(SH3!1).SOS1(SH3!1)    Arrhenius(bind_GRB2_SOS1_phi, Ea0_bind_GRB2_SOS1)
+  RTK_and_GRB2_bound_SOS1_binds_RASgdp:      GRB2(SH2!+,SH3!1).SOS1(SH3!1,ras) + RAS(sos1,state~gdp) -> GRB2(SH2!+,SH3!1).RAS(sos1!2,state~gdp).SOS1(SH3!1,ras!2)    bind_SOS1_RAS_kf
+  SOS1_dissociates_from_RAS:                 RAS(sos1!1).SOS1(ras!1) -> SOS1(ras) + RAS(sos1)    bind_SOS1_RAS_kr
+  SOS1_catalyzes_RAS_guanosine_exchange:     RAS(sos1!1,state~gdp).SOS1(ras!1) -> SOS1(ras) + RAS(sos1,state~gtp)    catalyze_SOS1_RAS_gtp_kcat
   RAS_hydrolisis_GTP:                        RAS(raf,state~gtp) -> RAS(raf,state~gdp)    catalyze_NF1_RAS_gdp_kcat
   BRAF_and_BRAF_bind_and_dissociate:         BRAF(raf) + BRAF(raf) <-> BRAF(raf!1).BRAF(raf!1)    Arrhenius(bind_RAF_RAF_phi, Ea0_bind_BRAF_BRAF)
   BRAF_and_CRAF_bind_and_dissociate:         BRAF(raf) + CRAF(raf) <-> BRAF(raf!1).CRAF(raf!1)    Arrhenius(bind_RAF_RAF_phi, Ea0_bind_BRAF_CRAF)
   CRAF_and_CRAF_bind_and_dissociate:         CRAF(raf) + CRAF(raf) <-> CRAF(raf!1).CRAF(raf!1)    Arrhenius(bind_RAF_RAF_phi, Ea0_bind_CRAF_CRAF)
-  RASgtp_and_BRAF_bind_and_dissociate:       RAS(raf,state~gtp) + BRAF(RBD) <-> RAS(raf!1,state~gtp).BRAF(RBD!1)    Arrhenius(bind_RASstategtp_RAF_phi, Ea0_bind_RASstategtp_BRAF)
-  RASgtp_and_CRAF_bind_and_dissociate:       RAS(raf,state~gtp) + CRAF(RBD) <-> RAS(raf!1,state~gtp).CRAF(RBD!1)    Arrhenius(bind_RASstategtp_RAF_phi, Ea0_bind_RASstategtp_CRAF)
-  GTP_hydrolysis_dissociates_BRAF_from_RAS:  RAS(raf!1,state~gtp).BRAF(RBD!1) -> RAS(raf,state~gdp) + BRAF(RBD)    catalyze_NF1_RAS_gdp_kcat
-  GTP_hydrolysis_dissociates_CRAF_from_RAS:  RAS(raf!1,state~gtp).CRAF(RBD!1) -> RAS(raf,state~gdp) + CRAF(RBD)    catalyze_NF1_RAS_gdp_kcat
-  RAFi_and_BRAF_bind_and_dissociate:         RAFi(raf) + BRAF(rafi) <-> RAFi(raf!1).BRAF(rafi!1)    Arrhenius(bind_RAFi_RAF_phi, Ea0_bind_BRAFi_RAF)
-  RAFi_and_CRAF_bind_and_dissociate:         RAFi(raf) + CRAF(rafi) <-> RAFi(raf!1).CRAF(rafi!1)    Arrhenius(bind_RAFi_RAF_phi, Ea0_bind_CRAFi_RAF)
+  RASgtp_and_BRAF_bind_and_dissociate:       RAS(raf,state~gtp) + BRAF(RBD) <-> BRAF(RBD!1).RAS(raf!1,state~gtp)    Arrhenius(bind_RASstategtp_RAF_phi, Ea0_bind_RASstategtp_BRAF)
+  RASgtp_and_CRAF_bind_and_dissociate:       RAS(raf,state~gtp) + CRAF(RBD) <-> CRAF(RBD!1).RAS(raf!1,state~gtp)    Arrhenius(bind_RASstategtp_RAF_phi, Ea0_bind_RASstategtp_CRAF)
+  GTP_hydrolysis_dissociates_BRAF_from_RAS:  BRAF(RBD!1).RAS(raf!1,state~gtp) -> RAS(raf,state~gdp) + BRAF(RBD)    catalyze_NF1_RAS_gdp_kcat
+  GTP_hydrolysis_dissociates_CRAF_from_RAS:  CRAF(RBD!1).RAS(raf!1,state~gtp) -> RAS(raf,state~gdp) + CRAF(RBD)    catalyze_NF1_RAS_gdp_kcat
+  RAFi_and_BRAF_bind_and_dissociate:         RAFi(raf) + BRAF(rafi) <-> BRAF(rafi!1).RAFi(raf!1)    Arrhenius(bind_RAFi_RAF_phi, Ea0_bind_BRAFi_RAF)
+  RAFi_and_CRAF_bind_and_dissociate:         RAFi(raf) + CRAF(rafi) <-> CRAF(rafi!1).RAFi(raf!1)    Arrhenius(bind_RAFi_RAF_phi, Ea0_bind_CRAFi_RAF)
   BRAF_and_uMEK_bind_and_dissociate:         BRAF(mek) + MEK(phospho~u,raf) <-> BRAF(mek!1).MEK(phospho~u,raf!1)    Arrhenius(bind_RAF_MEKphosphou_phi, Ea0_bind_BRAF_MEKphosphou)
   CRAF_and_uMEK_bind_and_dissociate:         CRAF(mek) + MEK(phospho~u,raf) <-> CRAF(mek!1).MEK(phospho~u,raf!1)    Arrhenius(bind_RAF_MEKphosphou_phi, Ea0_bind_CRAF_MEKphosphou)
-  BRAF_BRAF_phosphorylates_MEK:              MEK(phospho~u,raf!1).BRAF(RBD!+,mek!1,raf!2,rafi).BRAF(RBD!+,raf!2) -> MEK(phospho~p,raf) + BRAF(RBD!+,mek,raf!2,rafi).BRAF(RBD!+,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
-  BRAF_CRAF_phosphorylates_MEK:              MEK(phospho~u,raf!1).BRAF(RBD!+,mek!1,raf!2,rafi).CRAF(RBD!+,raf!2) -> MEK(phospho~p,raf) + BRAF(RBD!+,mek,raf!2,rafi).CRAF(RBD!+,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
-  CRAF_BRAF_phosphorylates_MEK:              MEK(phospho~u,raf!1).CRAF(RBD!+,mek!1,raf!2,rafi).BRAF(RBD!+,raf!2) -> MEK(phospho~p,raf) + CRAF(RBD!+,mek,raf!2,rafi).BRAF(RBD!+,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
-  CRAF_CRAF_phosphorylates_MEK:              MEK(phospho~u,raf!1).CRAF(RBD!+,mek!1,raf!2,rafi).CRAF(RBD!+,raf!2) -> MEK(phospho~p,raf) + CRAF(RBD!+,mek,raf!2,rafi).CRAF(RBD!+,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
-  BRAFV600E_phosphorylates_MEK_1:            MEK(meki,phospho~u,raf!1).BRAF(AA600~E,mek!1,raf,rafi) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,mek,raf,rafi)    catalyze_RAFrafiNone_MEK_p_kcat
-  BRAFV600E_phosphorylates_MEK_2:            MEK(meki,phospho~u,raf!1).BRAF(AA600~E,RBD,mek!1,raf!+,rafi) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,RBD,mek,raf!+,rafi)    catalyze_RAFrafiNone_MEK_p_kcat
-  BRAFV600E_phosphorylates_MEK_3:            MEK(meki,phospho~u,raf!1).BRAF(AA600~E,RBD!+,mek!1,raf!2,rafi).BRAF(RBD,raf!2) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,RBD!+,mek,raf!2,rafi).BRAF(RBD,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
-  BRAFV600E_phosphorylates_MEK_4:            MEK(meki,phospho~u,raf!1).BRAF(AA600~E,RBD!+,mek!1,raf!2,rafi).CRAF(RBD,raf!2) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,RBD!+,mek,raf!2,rafi).CRAF(RBD,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
+  BRAF_BRAF_phosphorylates_MEK:              BRAF(RBD!+,mek!1,raf!2,rafi).BRAF(RBD!+,raf!2).MEK(phospho~u,raf!1) -> MEK(phospho~p,raf) + BRAF(RBD!+,mek,raf!2,rafi).BRAF(RBD!+,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
+  BRAF_CRAF_phosphorylates_MEK:              BRAF(RBD!+,mek!1,raf!2,rafi).CRAF(RBD!+,raf!2).MEK(phospho~u,raf!1) -> MEK(phospho~p,raf) + BRAF(RBD!+,mek,raf!2,rafi).CRAF(RBD!+,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
+  CRAF_BRAF_phosphorylates_MEK:              BRAF(RBD!+,raf!2).CRAF(RBD!+,mek!1,raf!2,rafi).MEK(phospho~u,raf!1) -> MEK(phospho~p,raf) + BRAF(RBD!+,raf!2).CRAF(RBD!+,mek,raf!2,rafi)    catalyze_RAFrafiNone_MEK_p_kcat
+  CRAF_CRAF_phosphorylates_MEK:              CRAF(RBD!+,mek!1,raf!2,rafi).CRAF(RBD!+,raf!2).MEK(phospho~u,raf!1) -> MEK(phospho~p,raf) + CRAF(RBD!+,mek,raf!2,rafi).CRAF(RBD!+,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
+  BRAFV600E_phosphorylates_MEK_1:            BRAF(AA600~E,mek!1,raf,rafi).MEK(meki,phospho~u,raf!1) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,mek,raf,rafi)    catalyze_RAFrafiNone_MEK_p_kcat
+  BRAFV600E_phosphorylates_MEK_2:            BRAF(AA600~E,RBD,mek!1,raf!+,rafi).MEK(meki,phospho~u,raf!1) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,RBD,mek,raf!+,rafi)    catalyze_RAFrafiNone_MEK_p_kcat
+  BRAFV600E_phosphorylates_MEK_3:            BRAF(AA600~E,RBD!+,mek!1,raf!2,rafi).BRAF(RBD,raf!2).MEK(meki,phospho~u,raf!1) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,RBD!+,mek,raf!2,rafi).BRAF(RBD,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
+  BRAFV600E_phosphorylates_MEK_4:            BRAF(AA600~E,RBD!+,mek!1,raf!2,rafi).CRAF(RBD,raf!2).MEK(meki,phospho~u,raf!1) -> MEK(meki,phospho~p,raf) + BRAF(AA600~E,RBD!+,mek,raf!2,rafi).CRAF(RBD,raf!2)    catalyze_RAFrafiNone_MEK_p_kcat
   MEK_is_dephosphorylated:                   MEK(phospho~p) -> MEK(phospho~u)    catalyze_PP2A_MEK_u_kcat
-  MEKi_and_MEK_bind_and_dissociate:          MEKi(mek) + MEK(meki) <-> MEKi(mek!1).MEK(meki!1)    Arrhenius(bind_MEKi_MEK_phi, Ea0_bind_MEKi_MEK)
-  MEK_binds_uERK:                            MEK(Dsite) + ERK(CD,phospho~u) -> MEK(Dsite!1).ERK(CD!1,phospho~u)    bind_MEK_ERKphosphou_kf
-  MEK_dissociates_from_ERK:                  MEK(Dsite!1).ERK(CD!1) -> MEK(Dsite) + ERK(CD)    bind_MEK_ERKphosphou_kr
+  MEKi_and_MEK_bind_and_dissociate:          MEKi(mek) + MEK(meki) <-> MEK(meki!1).MEKi(mek!1)    Arrhenius(bind_MEKi_MEK_phi, Ea0_bind_MEKi_MEK)
+  MEK_binds_uERK:                            MEK(Dsite) + ERK(CD,phospho~u) -> ERK(CD!1,phospho~u).MEK(Dsite!1)    bind_MEK_ERKphosphou_kf
+  MEK_dissociates_from_ERK:                  ERK(CD!1).MEK(Dsite!1) -> MEK(Dsite) + ERK(CD)    bind_MEK_ERKphosphou_kr
   pMEK_phosphorylates_ERK:                   ERK(CD!1,phospho~u).MEK(Dsite!1,meki,phospho~p) -> ERK(CD,phospho~p) + MEK(Dsite,meki,phospho~p)    catalyze_MEKmekiNone_phosphop_ERK_p_kcat
   basal_synthesis_SPRY:                      0 -> SPRY(SH3)    synthesize_ERKphosphop_SPRY_ksyn
   basal_degradation_SPRY:                    SPRY() -> 0    synthesize_ERKphosphop_SPRY_kdeg DeleteMolecules
   ERK_synthesizes_SPRY:                      0 + ERK(phospho~p) -> SPRY(SH3) + ERK(phospho~p)    synthesize_ERKphosphop_SPRY_kmodslope
-  SPRY_binds_GRB2:                           SPRY(SH3) + GRB2(SH3) -> SPRY(SH3!1).GRB2(SH3!1)    bind_SPRY_GRB2_kf
-  SPRY_dissociates_from_GRB2:                SPRY(SH3!1).GRB2(SH3!1) -> SPRY(SH3) + GRB2(SH3)    bind_SPRY_GRB2_kr
+  SPRY_binds_GRB2:                           SPRY(SH3) + GRB2(SH3) -> GRB2(SH3!1).SPRY(SH3!1)    bind_SPRY_GRB2_kf
+  SPRY_dissociates_from_GRB2:                GRB2(SH3!1).SPRY(SH3!1) -> SPRY(SH3) + GRB2(SH3)    bind_SPRY_GRB2_kr
   SOS1_is_phosphorylated:                    SOS1(S1134~u) -> SOS1(S1134~p)    catalyze_ERKphosphop_SOS1_pS1134_kbase
   SOS1_is_dephosphorylated:                  SOS1(S1134~p) -> SOS1(S1134~u)    catalyze_phosphatase_SOS1_uS1134_kcat
   pERK_phosphorylates_SOS1:                  ERK(phospho~p) + SOS1(S1134~u) -> ERK(phospho~p) + SOS1(S1134~p)    catalyze_ERKphosphop_SOS1_pS1134_kcat
-  pSOS1_has_modulated_affinity_to_GRB2:      SOS1(S1134~p,SH3!1).GRB2(SH3!1) -> SOS1(S1134~p,SH3) + GRB2(SH3)    __reverse_bind_GRB2_SOS1_local1
   ERK_synthesizes_EGFR:                      0 + ERK(phospho~p) -> EGFR(SH2,rtk,rtkf) + ERK(phospho~p)    synthesize_ERKphosphop_EGFR_kmodslope
   basal_synthesis_DUSP:                      0 -> DUSP(erk)    synthesize_ERKphosphop_DUSP_ksyn
   basal_degradation_DUSP:                    DUSP() -> 0    synthesize_ERKphosphop_DUSP_kdeg DeleteMolecules
   ERK_synthesizes_DUSP:                      0 + ERK(phospho~p) -> DUSP(erk) + ERK(phospho~p)    synthesize_ERKphosphop_DUSP_kmodslope
   DUSP_binds_pERK:                           DUSP(erk) + ERK(CD,phospho~p) -> DUSP(erk!1).ERK(CD!1,phospho~p)    bind_DUSP_ERKphosphop_kf
   DUSP_dissociates_from_ERK:                 DUSP(erk!1).ERK(CD!1) -> DUSP(erk) + ERK(CD)    bind_DUSP_ERKphosphop_kr
-  DUSP_dephosphorylates_ERK:                 ERK(CD!1,phospho~p).DUSP(erk!1) -> ERK(CD,phospho~u) + DUSP(erk)    catalyze_DUSP_ERK_u_kcat
+  DUSP_dephosphorylates_ERK:                 DUSP(erk!1).ERK(CD!1,phospho~p) -> ERK(CD,phospho~u) + DUSP(erk)    catalyze_DUSP_ERK_u_kcat
 end reaction rules
 
 end model
