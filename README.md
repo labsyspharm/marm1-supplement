@@ -7,7 +7,7 @@ and one that performs example simulations of the model using our calibrated para
 You can preview the notebooks here:
 
 * Model construction - [MARM1_construction.ipynb](https://github.com/labsyspharm/marm1-supplement/blob/master/resources/MARM1_construction.ipynb)
-* Model simulation - [MARM1_simulation.ipynb](https://github.com/labsyspharm/marm1-supplement/blob/master/resources/MARM1_simulation.ipynb)
+* Model simulation - [MARM1_simulation.ipynb](https://github.com/labsyspharm/marm1-supplement/blob/master/resources/MARM1_simulation_single_run.ipynb)
 
 If you wish to interact with the notebooks, you can do so with our Docker image as follows:
 
