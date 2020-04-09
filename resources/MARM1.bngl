@@ -181,6 +181,7 @@ begin observables
   Molecules pERK                  ERK(phospho~p)
   Molecules pS1134SOS1            SOS1(S1134~p)
   Molecules pMEK                  MEK(phospho~p)
+  Molecules tEGF                  EGF()
   Molecules SOS1_active           GRB2(SH2!+,SH3!1).SOS1(SH3!1)
   Molecules uS1134SOS1            SOS1(S1134~u)
   Molecules RAS_gtp               RAS(state~gtp)
