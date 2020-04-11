@@ -168,29 +168,30 @@ begin molecule types
 end molecule types
 
 begin observables
-  Molecules tBRAF                 BRAF()
-  Molecules tCRAF                 CRAF()
-  Molecules tRAS                  RAS()
-  Molecules tMEK                  MEK()
-  Molecules tERK                  ERK()
-  Molecules tDUSP                 DUSP()
-  Molecules tEGFR                 EGFR()
-  Molecules tGRB2                 GRB2()
-  Molecules tSPRY                 SPRY()
-  Molecules tSOS1                 SOS1()
-  Molecules pERK                  ERK(phospho~p)
-  Molecules pS1134SOS1            SOS1(S1134~p)
-  Molecules pMEK                  MEK(phospho~p)
-  Molecules tEGF                  EGF()
-  Molecules SOS1_active           GRB2(SH2!+,SH3!1).SOS1(SH3!1)
-  Molecules uS1134SOS1            SOS1(S1134~u)
-  Molecules RAS_gtp               RAS(state~gtp)
-  Molecules RAS_gdp               RAS(state~gdp)
-  Molecules active_RAF_dimers     BRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1)
-  Molecules active_RAF_monomers   BRAF(AA600~E,raf,rafi) BRAF(AA600~E,RBD,raf!+,rafi) BRAF(AA600~E,RBD!+,raf!2,rafi).BRAF(RBD,raf!2) BRAF(AA600~E,RBD!+,raf!2,rafi).CRAF(RBD,raf!2)
-  Molecules active_MEK            MEK(meki,phospho~p)
-  Molecules uMEK                  MEK(phospho~u)
-  Molecules uERK                  ERK(phospho~u)
+  Molecules tBRAF                      BRAF()
+  Molecules tCRAF                      CRAF()
+  Molecules tRAS                       RAS()
+  Molecules tMEK                       MEK()
+  Molecules tERK                       ERK()
+  Molecules tDUSP                      DUSP()
+  Molecules tEGFR                      EGFR()
+  Molecules tGRB2                      GRB2()
+  Molecules tSPRY                      SPRY()
+  Molecules tSOS1                      SOS1()
+  Molecules pERK                       ERK(phospho~p)
+  Molecules pS1134SOS1                 SOS1(S1134~p)
+  Molecules pMEK                       MEK(phospho~p)
+  Molecules tEGF                       EGF()
+  Molecules SOS1_active                GRB2(SH2!+,SH3!1).SOS1(SH3!1)
+  Molecules SOS1_signaling_competent   GRB2(SH3!1).SOS1(SH3!1)
+  Molecules uS1134SOS1                 SOS1(S1134~u)
+  Molecules RAS_gtp                    RAS(state~gtp)
+  Molecules RAS_gdp                    RAS(state~gdp)
+  Molecules active_RAF_dimers          BRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1)
+  Molecules active_RAF_monomers        BRAF(AA600~E,raf,rafi) BRAF(AA600~E,RBD,raf!+,rafi) BRAF(AA600~E,RBD!+,raf!2,rafi).BRAF(RBD,raf!2) BRAF(AA600~E,RBD!+,raf!2,rafi).CRAF(RBD,raf!2)
+  Molecules active_MEK                 MEK(meki,phospho~p)
+  Molecules uMEK                       MEK(phospho~u)
+  Molecules uERK                       ERK(phospho~u)
 end observables
 
 begin functions
@@ -229,6 +230,7 @@ begin energy patterns
   ep_bind_EGFR_EGFR:            EGFR(rtk!1).EGFR(rtk!1)    Gf_bind_EGFR_EGFR
   ep_EGFR_EGFR_mod_EGF_single:  EGF(rtk!2).EGFR(rtk!1,rtkf!2).EGFR(rtk!1,rtkf)    ep_EGFR_EGFR_mod_EGF_single_Gf
   ep_EGFR_EGFR_mod_EGF_double:  EGF(rtk!2).EGF(rtk!3).EGFR(rtk!1,rtkf!2).EGFR(rtk!1,rtkf!3)    ep_EGFR_EGFR_mod_EGF_double_Gf
+  ep_bind_GRB2_SOS1:            GRB2(SH3!1).SOS1(SH3!1)    Gf_bind_GRB2_SOS1
   ep_bind_BRAF_BRAF:            BRAF(raf!1).BRAF(raf!1)    Gf_bind_BRAF_BRAF
   ep_bind_BRAF_CRAF:            BRAF(raf!1).CRAF(raf!1)    Gf_bind_BRAF_CRAF
   ep_bind_CRAF_CRAF:            CRAF(raf!1).CRAF(raf!1)    Gf_bind_CRAF_CRAF
