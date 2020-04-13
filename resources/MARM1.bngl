@@ -187,9 +187,12 @@ begin observables
   Molecules uS1134SOS1                 SOS1(S1134~u)
   Molecules RAS_gtp                    RAS(state~gtp)
   Molecules RAS_gdp                    RAS(state~gdp)
-  Molecules active_RAF_dimers          BRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1)
   Molecules active_RAF_monomers        BRAF(AA600~E,raf,rafi) BRAF(AA600~E,RBD,raf!+,rafi) BRAF(AA600~E,RBD!+,raf!2,rafi).BRAF(RBD,raf!2) BRAF(AA600~E,RBD!+,raf!2,rafi).CRAF(RBD,raf!2)
+  Molecules inhibited_RAF_monomers     BRAF(AA600~E,raf,rafi!+) BRAF(AA600~E,RBD,raf!+,rafi!+) BRAF(AA600~E,RBD!+,raf!2,rafi!+).BRAF(RBD,raf!2) BRAF(AA600~E,RBD!+,raf!2,rafi!+).CRAF(RBD,raf!2)
+  Molecules active_RAF_dimers          BRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1)
+  Molecules inhibited_RAF_dimers       BRAF(RBD!+,raf!1,rafi!+).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi!+).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi!+).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi!+).CRAF(RBD!+,raf!1)
   Molecules active_MEK                 MEK(meki,phospho~p)
+  Molecules inhibited_MEK              MEK(meki!+,phospho~p)
   Molecules uMEK                       MEK(phospho~u)
   Molecules uERK                       ERK(phospho~u)
 end observables
