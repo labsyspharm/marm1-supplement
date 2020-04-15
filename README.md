@@ -3,8 +3,7 @@
 ### Jupyter notebook viewer
 
 We have prepared three Jupyter Notebooks -- one that explains how MARM1 is constructed,
-and tow that performs simulations of the model using our calibrated parameters.
-You can preview the notebooks here:
+and two others that perform simulations using calibrated parameters. You can preview the notebooks here:
 
 * Model construction - [MARM1_construction.ipynb](https://github.com/labsyspharm/marm1-supplement/blob/master/resources/MARM1_construction.ipynb)
 * Model simulation (single run with visualization) - [MARM1_simulation_single_run.ipynb](https://github.com/labsyspharm/marm1-supplement/blob/master/resources/MARM1_simulation_single_run.ipynb)
