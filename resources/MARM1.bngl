@@ -169,50 +169,68 @@ end molecule types
 
 begin observables
   Molecules tBRAF                      BRAF()
+  Molecules tBRAF600E                  BRAF(AA600~E)
   Molecules tCRAF                      CRAF()
   Molecules tRAS                       RAS()
+  Molecules gdpRAS                     RAS(state~gdp)
+  Molecules gtpRAS                     RAS(state~gtp)
+  Molecules tRAFi                      RAFi()
   Molecules tMEK                       MEK()
+  Molecules pMEK                       MEK(phospho~p)
+  Molecules uMEK                       MEK(phospho~u)
+  Molecules tMEKi                      MEKi()
   Molecules tERK                       ERK()
+  Molecules pERK                       ERK(phospho~p)
+  Molecules uERK                       ERK(phospho~u)
   Molecules tDUSP                      DUSP()
   Molecules tEGFR                      EGFR()
+  Molecules tEGF                       EGF()
   Molecules tGRB2                      GRB2()
   Molecules tSPRY                      SPRY()
   Molecules tSOS1                      SOS1()
-  Molecules pERK                       ERK(phospho~p)
   Molecules pS1134SOS1                 SOS1(S1134~p)
-  Molecules pMEK                       MEK(phospho~p)
-  Molecules tEGF                       EGF()
-  Molecules SOS1_active                GRB2(SH2!+,SH3!1).SOS1(SH3!1)
-  Molecules SOS1_signaling_competent   GRB2(SH3!1).SOS1(SH3!1)
   Molecules uS1134SOS1                 SOS1(S1134~u)
-  Molecules RAS_gtp                    RAS(state~gtp)
-  Molecules RAS_gdp                    RAS(state~gdp)
-  Molecules active_RAF_monomers        BRAF(AA600~E,raf,rafi) BRAF(AA600~E,RBD,raf!+,rafi) BRAF(AA600~E,RBD!+,raf!2,rafi).BRAF(RBD,raf!2) BRAF(AA600~E,RBD!+,raf!2,rafi).CRAF(RBD,raf!2)
-  Molecules inhibited_RAF_monomers     BRAF(AA600~E,raf,rafi!+) BRAF(AA600~E,RBD,raf!+,rafi!+) BRAF(AA600~E,RBD!+,raf!2,rafi!+).BRAF(RBD,raf!2) BRAF(AA600~E,RBD!+,raf!2,rafi!+).CRAF(RBD,raf!2)
-  Molecules active_RAF_dimers          BRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi).CRAF(RBD!+,raf!1)
-  Molecules inhibited_RAF_dimers       BRAF(RBD!+,raf!1,rafi!+).BRAF(RBD!+,raf!1) BRAF(RBD!+,raf!1,rafi!+).CRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi!+).BRAF(RBD!+,raf!1) CRAF(RBD!+,raf!1,rafi!+).CRAF(RBD!+,raf!1)
-  Molecules active_MEK                 MEK(meki,phospho~p)
-  Molecules inhibited_MEK              MEK(meki!+,phospho~p)
-  Molecules uMEK                       MEK(phospho~u)
-  Molecules uERK                       ERK(phospho~u)
+  Molecules signaling_competent_SOS1   GRB2(SH3!1).SOS1(SH3!1)
+  Molecules baseline_R                 BRAF(raf,rafi) CRAF(raf,rafi)
+  Molecules baseline_IR                BRAF(raf,rafi!+) CRAF(raf,rafi!+)
+  Molecules baseline_RR                BRAF(rafi).BRAF(rafi) BRAF(rafi).CRAF(rafi) BRAF(rafi).CRAF(rafi) CRAF(rafi).CRAF(rafi)
+  Species baseline_RRI               BRAF(rafi!+).BRAF(rafi) BRAF(rafi!+).BRAF(rafi) BRAF(rafi!+).CRAF(rafi) BRAF(rafi).CRAF(rafi!+) BRAF(rafi).CRAF(rafi!+) BRAF(rafi!+).CRAF(rafi) CRAF(rafi!+).CRAF(rafi) CRAF(rafi!+).CRAF(rafi)
+  Molecules baseline_IRRI              BRAF(rafi!+).BRAF(rafi!+) BRAF(rafi!+).CRAF(rafi!+) BRAF(rafi!+).CRAF(rafi!+) CRAF(rafi!+).CRAF(rafi!+)
+  Molecules RAF_marginal_RAFi          BRAF(rafi!+) CRAF(rafi!+)
+  Molecules RAF_marginal_RAS           BRAF(RBD!+) CRAF(RBD!+)
+  Molecules RAF_marginal_RAF           BRAF(raf!+) CRAF(raf!+)
+  Molecules RAF_marginal_MEK           BRAF(mek!+) CRAF(mek!+)
+  Molecules drugfree_uMEK              MEK(meki,phospho~u)
+  Molecules inhibited_uMEK             MEK(meki!+,phospho~u)
+  Molecules drugfree_pMEK              MEK(meki,phospho~p)
+  Molecules inhibited_pMEK             MEK(meki!+,phospho~p)
 end observables
 
 begin functions
-  tBRAF_obs()        1.0e-6*tBRAF*N_Avogadro*volume
-  tCRAF_obs()        1.0e-6*tCRAF*N_Avogadro*volume
-  tRAS_obs()         1.0e-6*tRAS*N_Avogadro*volume
-  tMEK_obs()         1.0e-6*tMEK*N_Avogadro*volume
-  tDUSP_obs()        1.0e-6*tDUSP*N_Avogadro*volume
-  tEGFR_obs()        1.0e-6*tEGFR*N_Avogadro*volume
-  tGRB2_obs()        1.0e-6*tGRB2*N_Avogadro*volume
-  tSPRY_obs()        1.0e-6*tSPRY*N_Avogadro*volume
-  tSOS1_obs()        1.0e-6*tSOS1*N_Avogadro*volume
-  tERK_obs()         1.0e-6*tERK*N_Avogadro*volume
-  pERK_obs()         pERK*tERK^(-1)
-  pS1134SOS1_obs()   pS1134SOS1*tSOS1^(-1)
+  tBRAF_obs()        1.0e-6*N_Avogadro*volume*tBRAF
+  tBRAF600E_obs()    1.0e-6*N_Avogadro*volume*tBRAF600E
+  tCRAF_obs()        1.0e-6*N_Avogadro*volume*tCRAF
+  tRAS_obs()         1.0e-6*N_Avogadro*volume*tRAS
+  gdpRAS_obs()       1.0e-6*N_Avogadro*volume*gdpRAS
+  gtpRAS_obs()       1.0e-6*N_Avogadro*volume*gtpRAS
+  tRAFi_obs()        1.0e-6*N_Avogadro*volume*tRAFi
+  tMEK_obs()         1.0e-6*N_Avogadro*volume*tMEK
   pMEK_obs()         pMEK*tMEK^(-1)
   pMEK_IF_obs()      pMEK_obs*pMEK_IF_scale + pMEK_IF_offset
+  uMEK_obs()         1.0e-6*N_Avogadro*volume*uMEK
+  tMEKi_obs()        1.0e-6*N_Avogadro*volume*tMEKi
+  tERK_obs()         1.0e-6*N_Avogadro*volume*tERK
+  pERK_obs()         pERK*tERK^(-1)
   pERK_IF_obs()      pERK_obs*pERK_IF_scale + pERK_IF_offset
+  uERK_obs()         1.0e-6*N_Avogadro*volume*uERK
+  tDUSP_obs()        1.0e-6*N_Avogadro*volume*tDUSP
+  tEGFR_obs()        1.0e-6*N_Avogadro*volume*tEGFR
+  tEGF_obs()         1.0e-6*N_Avogadro*volume*tEGF
+  tGRB2_obs()        1.0e-6*N_Avogadro*volume*tGRB2
+  tSPRY_obs()        1.0e-6*N_Avogadro*volume*tSPRY
+  tSOS1_obs()        1.0e-6*N_Avogadro*volume*tSOS1
+  pS1134SOS1_obs()   pS1134SOS1*tSOS1^(-1)
+  uS1134SOS1_obs()   1.0e-6*N_Avogadro*volume*uS1134SOS1
 end functions
 
 begin species
