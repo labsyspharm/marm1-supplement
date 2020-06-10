@@ -214,8 +214,8 @@ begin functions
   pERK_obs()         pERK*tERK^(-1)
   pS1134SOS1_obs()   pS1134SOS1*tSOS1^(-1)
   pMEK_obs()         pMEK*tMEK^(-1)
-  pMEK_IF_obs()      pMEK_obs*pMEK_IF_scale + pMEK_IF_offset
-  pERK_IF_obs()      pERK_obs*pERK_IF_scale + pERK_IF_offset
+  pMEK_IF_obs()      pMEK_IF_scale*pMEK_obs + pMEK_IF_offset
+  pERK_IF_obs()      pERK_IF_scale*pERK_obs + pERK_IF_offset
 end functions
 
 begin species

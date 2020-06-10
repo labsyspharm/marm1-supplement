@@ -16,7 +16,7 @@ RUN \
 ENV BNGPATH=/home/jovyan/bionetgen/bionetgen-BioNetGen-2.3.2/bng2
 
 RUN \
-    pip install git+git://github.com/jmuhlich/pysb.git@marm1-integration python-libsbml cite2c \
+    pip install git+git://github.com/jmuhlich/pysb.git@marm1-integration sympy==1.5.1 python-libsbml cite2c \
     && python -m cite2c.install
 
 COPY --chown=jovyan:users /resources/ /home/jovyan/
